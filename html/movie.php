@@ -1,3 +1,27 @@
+<?php
+    $db = new PDO("mysql:host=localhost;dbname=CinemaPhp",
+        "root", "");
+
+    $movie = null;
+
+    if (isset($_GET['id'])) {
+        $movieId = (int)$_GET['id']; // Получение и преобразование id актера в целое число
+
+        // Подготовка и выполнение запроса для получения информации об актере
+        $actorStmt = $db->prepare("SELECT * FROM movie WHERE movie_id = :movie_id");
+        $actorStmt->bindParam(':movie_id', $movieId, PDO::PARAM_INT);
+
+        if ($actorStmt->execute()) {
+            $movie = $actorStmt->fetch(PDO::FETCH_ASSOC);
+        } else {
+            print_r($actorStmt->errorInfo());
+        }
+    } else {
+        echo "There is no movie.";
+    }
+
+?>
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -36,31 +60,16 @@
             <main class="info">
                 <div class="items-container">
                     <div class="movie" th:if="${movie != null}">
-                        <img th:src="${movie.poster}" alt ="Alt" class="image">
+                        <img src="<?= htmlspecialchars($movie['poster']) ?>" alt ="Alt" class="image">
                         <div class="movie-info">
-                            <h2 th:text="${movie.name}"></h2>
-                            <p th:text="${movie.description}"></p>
-                            <p>Год выхода: <span th:text="${movie.year}"></span></p>
-                            <p>Жанры:
-                                <span th:each="genre, iterStat : ${genres}">
-                                    <a th:href="@{/genre/get/{id}(id=${genre.id})}" th:text="${genre.name}"></a>
-                                    <span th:if="${!iterStat.last}">, </span>
-                                </span>
-                            </p>
-                            <p>Длительность: <span th:text="${movie.duration}"></span></p>
-                            <p>Оценка: <span th:text="${movie.score}"></span></p>
-                            <p>Актеры:
-                                <span th:each="actor, iterStat : ${actors}">
-                                    <a th:href="@{/actor/get/{id}(id=${actor.id})}" th:text="${actor.name}"></a>
-                                    <span th:if="${!iterStat.last}">, </span>
-                                </span>
-                            </p>
-                            <p>Режиссер: <a th:href="@{/director/get/{id}(id=${director.id})}" th:text="${director.name}"></a></p>
+                            <h2><?= htmlspecialchars($movie['movie_name']) ?></h2>
+                            <p><?= htmlspecialchars($movie['description']) ?></p>
+                            <p>Year of release: <?= htmlspecialchars($movie['year_of_release']) ?></p>
                         </div>
                     </div>
                     <div class="player">
                         <iframe
-                                th:src="@{'https://www.youtube.com/embed/' + ${movie.video}}"
+                                src="<?= htmlspecialchars($movie['video']) ?>"
                                 title="YouTube video player"
                                 frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

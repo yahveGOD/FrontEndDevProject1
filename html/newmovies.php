@@ -53,7 +53,7 @@ if($query = $db->query("SELECT * FROM movie WHERE movie.year_of_release >= 2023"
           <div class="item">
             <img src="<?= $data['poster'] ?>" alt ="Alt" class="image">
             <div class="text">
-              <h2><a href="movie.php""><?= $data['movie_name'] ?></a></h2>
+              <h2><a href="movie.php?id=<?= $data['movie_id'] ?>"><?= $data['movie_name'] ?></a></h2>
               <p><?= $data['description'] ?></p>
               <p>Год выхода: <?= $data['year_of_release'] ?></p>
             </div>
