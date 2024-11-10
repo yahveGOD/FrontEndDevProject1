@@ -23,50 +23,62 @@ if($query = $db->query("SELECT * FROM movie WHERE movie.year_of_release >= 2023"
 
   <link rel = "stylesheet" href="../css/movie_profile.css">
   <script src ="../js/app.js" defer></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 </head>
 <body>
 
-<nav id="nav-bar">
-  <div class="container container-top">
-    <div>
-      <div class="logo">
-        <a href="index.php"><img src="../img/Без%20имени-1.png" alt="Alt"></a>
-      </div>
-    </div>
-    <div>
-      <ul class="main-menu">
-        <li><a href="genres.php">Genres</a></li>
-        <li><a href="actors.php">Actors</a></li>
-        <li><a href="#">Top-rated</a></li>
-        <li><a href="newmovies.php">New</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<div class="wrapper">
-  <div class="content">
+<nav id="nav-bar" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <h1 style="margin-top: 140px; font-size:50px;">Новинки кино:</h1>
-      <main class="info">
-        <div class="items-container">
-            <?php foreach ($info as $data): ?>
-          <div class="item">
-            <img src="<?= $data['poster'] ?>" alt ="Alt" class="image">
-            <div class="text">
-              <h2><a href="movie.php?id=<?= $data['movie_id'] ?>"><?= $data['movie_name'] ?></a></h2>
-              <p><?= $data['description'] ?></p>
-              <p>Год выхода: <?= $data['year_of_release'] ?></p>
-            </div>
-          </div>
-            <?php endforeach; ?>
+        <a class="navbar-brand" href="index.php">
+            <img src="../img/Без%20имени-1.png" alt="Alt" class="logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="genres.php">Genres</a></li>
+                <li class="nav-item"><a class="nav-link" href="actors.php">Actors</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Top-rated</a></li>
+                <li class="nav-item"><a class="nav-link" href="newmovies.php">New</a></li>
+            </ul>
         </div>
-      </main>
     </div>
+</nav>
+<div class="wrapper py-5">
+  <div class="container">
+    <h1 class="display-4 my-5">Новинки кино:</h1>
+    <main class="info">
+      <div class="row">
+          <?php foreach ($info as $data): ?>
+            <div class="col-md-4 col-sm-6 mb-4">
+              <div class="card h-100 shadow-sm">
+                <img src="<?= htmlspecialchars($data['poster']) ?>" alt="Poster" class="card-img-top">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <a href="movie.php?id=<?= htmlspecialchars($data['movie_id']) ?>" class="text-dark">
+                      <?= htmlspecialchars($data['movie_name']) ?>
+                    </a>
+                  </h5>
+                  <p class="card-text"><?= htmlspecialchars($data['description']) ?></p>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">Год выхода: <?= htmlspecialchars($data['year_of_release']) ?></small>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+      </div>
+    </main>
   </div>
 </div>
-<footer class="footer">
-  <p>© 2024 Spacer</p>
+<footer class="footer bg-dark text-white text-center py-3 mt-4">
+        <p>© 2024 Spacer</p>
 </footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>
